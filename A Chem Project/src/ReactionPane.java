@@ -26,9 +26,9 @@ public class ReactionPane extends Pane{
 		moveAnimation = new Timeline();
 		
 		for(int i=0; i<10; i++){
-			Ball b = new Ball(50, 30, Math.random()*40, Color.BLACK);
-			b.dx = Math.random() * 7 * (40-b.getRadius())/40;
-			b.dy = Math.random() * 10 * (40-b.getRadius())/40;
+			Ball b = new Ball(50, 30, 20, Color.BLACK);
+			b.dx = Math.random() * 7 ;
+			b.dy = Math.random() * 10 ;
 			b.setCenterX(Math.random()*500);
 			b.setCenterY(Math.random()*500);
 			balls.add(b);
@@ -50,14 +50,6 @@ public class ReactionPane extends Pane{
 		double dist = Math.sqrt(Math.pow(yDist,2) + Math.pow(xDist,2));
 		
 		return dist;
-	}
-	
-	private double findCenterAngle(Ball a, Ball b){
-		double yDist = a.getCenterY() - b.getCenterY();
-		double xDist = a.getCenterX() - b.getCenterX();
-		double theta = Math.tan(yDist/xDist);
-		
-		return theta;
 	}
 	
 	private void configureMoveBallAnimation() {
@@ -107,12 +99,21 @@ public class ReactionPane extends Pane{
 					double newDx = (abs(ball.dx) + abs(other.dx))/2;
 					
 					
-					ball.dy = newDy;
-					ball.dx = newDx;
+					if(ball.getCenterY()>other.getCenterY()){
+						ball.dy = newDy;
+						other.dy = -newDy;
+					}else{
+						ball.dy = -newDy;
+						other.dy = newDy;
+					}
 					
-					other.dy = -newDy;
-					other.dx = -newDx;
-					
+					if(ball.getCenterX()>other.getCenterX()){
+						ball.dx = newDx;
+						other.dx = -newDx;
+					}else{
+						ball.dx = -newDx;
+						other.dx = newDx;
+					}
 					interactions.add(new Pair<>(ball,other));
 				}
 			}
